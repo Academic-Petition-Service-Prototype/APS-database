@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Sep 21, 2021 at 10:49 AM
--- Server version: 10.4.10-MariaDB
--- PHP Version: 7.3.12
+-- Host: db:3306
+-- Generation Time: Dec 06, 2021 at 10:25 AM
+-- Server version: 5.7.36
+-- PHP Version: 7.4.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,185 +24,201 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `articles`
+-- Table structure for table `forms`
 --
 
-CREATE TABLE `articles` (
+CREATE TABLE `forms` (
   `id` int(11) NOT NULL,
-  `subject` varchar(255) DEFAULT NULL,
-  `sub_title` varchar(255) DEFAULT NULL,
-  `detail` text DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `tag` varchar(255) DEFAULT NULL,
-  `status` enum('true','false') DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `articlescol` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `form`
---
-
-CREATE TABLE `form` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `form_name` varchar(255) DEFAULT NULL,
+  `form_prototype` text COMMENT 'ตารางเก็บฟอร์มที่ Officer และ Chief สร้างขึ้น',
+  `created_date` datetime DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `approval_email` text COMMENT 'เก็บอีเมลของผู้ที่ต้องอนุมัติคำร้อง'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table เอาไว้เก็บ form ที่ head officer และ officer สร้าง';
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group`
+-- Table structure for table `reports`
 --
 
-CREATE TABLE `group` (
+CREATE TABLE `reports` (
   `id` int(11) NOT NULL,
-  `groupname` varchar(255) DEFAULT NULL,
-  `groupdetail` text DEFAULT NULL
+  `report_title` varchar(255) NOT NULL,
+  `report_detail` text NOT NULL,
+  `report_state` enum('read','unread') NOT NULL,
+  `report_created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `group`
+-- Dumping data for table `reports`
 --
 
-INSERT INTO `group` (`id`, `groupname`, `groupdetail`) VALUES
-(1, 'คณะวิศวะ', 'วิศวะลาดกระบังเด่นดัง');
+INSERT INTO `reports` (`id`, `report_title`, `report_detail`, `report_state`, `report_created`) VALUES
+(1, 'โดนอาจารย์บุลลี่', 'โดนอาจารย์บุลลี่ในวิชาสมาธิ', 'read', '2021-12-02 00:01:42'),
+(2, 'โดนอาจารย์บุลลี่fdgdfsgdfsg', 'โดนอาจารย์บุลลี่ในวิชาสมาธิdsfgdfsgd', 'read', '2021-12-02 21:42:55'),
+(3, 'asdfsafadf', 'asdfsadfsadfsafsd', 'read', '2021-12-02 21:46:58'),
+(4, 'asdfdsaf', 'dghfdhf', 'read', '2021-12-02 21:47:57'),
+(5, 'asdfdaf', 'asdfasdfsdf551555', 'read', '2021-12-02 21:56:33'),
+(6, 'asdfdaf', 'asdfasdfsdf551555', 'read', '2021-12-02 21:56:53'),
+(7, 'agsdfgdfs', 'gdsfgdsfgdsfg', 'read', '2021-12-02 22:00:39'),
+(8, 'agsdfgdfs', 'gdsfgdsfgdsfg', 'read', '2021-12-02 22:03:20'),
+(9, 'ฟหกดหฟก', 'กด', 'unread', '2021-12-02 22:08:27'),
+(10, 'หฟกดหฟกดฟดหฟกด', 'ฟหกดหฟกด', 'unread', '2021-12-02 22:23:00'),
+(11, 'fdgdfsgdh', 'ffjghj', 'unread', '2021-12-02 22:24:02'),
+(12, 'fdgdfsgdh', 'ffjghj', 'unread', '2021-12-02 22:24:10'),
+(13, 'gdfsgh', 'fjgkhjkjk454', 'unread', '2021-12-02 22:25:43'),
+(14, 'gdfsgh', 'fjgkhjkjk454', 'unread', '2021-12-02 22:31:50'),
+(15, 'sadfhdfhgf', 'jgghj', 'unread', '2021-12-02 22:33:58'),
+(16, 'sdfgfdhfj', 'khjkjkljk;', 'read', '2021-12-02 22:40:39');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tracking`
+-- Table structure for table `submitforms`
 --
 
-CREATE TABLE `tracking` (
+CREATE TABLE `submitforms` (
+  `id` int(11) NOT NULL,
+  `form_value` text,
+  `submit_date` datetime DEFAULT NULL,
+  `users_id` int(11) NOT NULL,
+  `forms_id` int(11) NOT NULL,
+  `submit_state` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trackings`
+--
+
+CREATE TABLE `trackings` (
   `idtracking` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `form_id` int(11) NOT NULL
+  `form_id` int(11) NOT NULL,
+  `tracking_count` text,
+  `tracking_status` text,
+  `tracking_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table ที่ track เอกสารหรือรายงานที่ student ส่งว่าอยู่สถานะไหน';
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `status` enum('student','officer','head officer','super admin') NOT NULL,
+  `status` enum('user','officer','chief','secretary','admin') NOT NULL,
   `f_name` varchar(255) DEFAULT NULL,
   `l_name` varchar(255) DEFAULT NULL,
   `tel_num` varchar(10) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `address` text DEFAULT NULL,
-  `gender` enum('male','female','etc.') DEFAULT NULL,
-  `group_id` int(11) NOT NULL
+  `gender` enum('ชาย','หญิง') DEFAULT NULL,
+  `registered` datetime DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `agency` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='เป็น Table ที่เก็บสมาชิกทุกคน(student,officer,head officer,super admin)';
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `status`, `f_name`, `l_name`, `tel_num`, `email`, `address`, `gender`, `group_id`) VALUES
-(3, '62015021', 'หฟกด่หฟากดา่า', 'student', 'ชญานิน', 'บัวสระ', '0656144649', '62015021@kmitl.ac.th', 'hgjjghfjkhjk', 'etc.', 1);
+INSERT INTO `users` (`id`, `email`, `password`, `status`, `f_name`, `l_name`, `tel_num`, `gender`, `registered`, `last_login`, `agency`) VALUES
+(1, 'chief@kmitl.ac.th', '$2b$10$cnvUyGs831sC.S107Bbxh.e9TuXNX5uYRiSDSlILGbo81dx3UYLRa', 'chief', 'กชกร', 'ไตรพจน์', NULL, NULL, '2021-12-01 06:23:35', '2021-12-02 18:44:58', 'kmitl'),
+(2, 'user@kmitl.ac.th', '$2b$10$7E7lZENm/rnrX1cflXsFpeHlr9KL2uUwBFsAyxUd2Q2zzbpUTFZLW', 'user', 'ณัฐกิต', 'วงศ์สิง', '0856145522', 'ชาย', '2021-12-01 06:24:52', '2021-12-02 18:28:31', 'kmitl'),
+(3, 'officer@kmitl.ac.th', '$2b$10$HIxiU23xveHK7oS57IJMeOmJVTSQWW28Z1QEyJF7gOwSDjjIb88Ga', 'officer', 'จิรัฐิติกาล', 'จันทร์แก้ว', NULL, NULL, '2021-12-01 06:28:05', '2021-12-02 18:44:04', 'kmitl'),
+(4, 'secretary@kmitl.ac.th', '$2b$10$/aTHOASVRzmhskBp4T.EnOCQhgtnT9NS4akv810nMheZu1toRTZ4y', 'secretary', 'ชุติกาญจน์', 'แก้วมณี', NULL, NULL, '2021-12-01 06:29:22', '2021-12-02 18:47:52', 'kmitl'),
+(5, 'admin@kmitl.ac.th', '$2b$10$NlXElY5HqXP9gmOc0hH61ulKUDpLf7FPtJdwfgvY9OV4hRDUXOfpG', 'admin', 'ณัฐชยุต', 'แสงโสรจสุข', NULL, NULL, '2021-12-01 06:29:57', '2021-12-02 18:52:10', '');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `articles`
+-- Indexes for table `forms`
 --
-ALTER TABLE `articles`
+ALTER TABLE `forms`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `form`
+-- Indexes for table `reports`
 --
-ALTER TABLE `form`
+ALTER TABLE `reports`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `submitforms`
+--
+ALTER TABLE `submitforms`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_form_user1_idx` (`user_id`);
+  ADD KEY `fk_submitforms_users1_idx` (`users_id`),
+  ADD KEY `fk_submitforms_forms1_idx` (`forms_id`);
 
 --
--- Indexes for table `group`
+-- Indexes for table `trackings`
 --
-ALTER TABLE `group`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `tracking`
---
-ALTER TABLE `tracking`
+ALTER TABLE `trackings`
   ADD PRIMARY KEY (`idtracking`),
-  ADD KEY `fk_tracking_user1_idx` (`user_id`),
   ADD KEY `fk_tracking_form1_idx` (`form_id`);
 
 --
--- Indexes for table `user`
+-- Indexes for table `users`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_user_group_idx` (`group_id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `articles`
+-- AUTO_INCREMENT for table `forms`
 --
-ALTER TABLE `articles`
+ALTER TABLE `forms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `form`
+-- AUTO_INCREMENT for table `reports`
 --
-ALTER TABLE `form`
+ALTER TABLE `reports`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `submitforms`
+--
+ALTER TABLE `submitforms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `group`
+-- AUTO_INCREMENT for table `trackings`
 --
-ALTER TABLE `group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tracking`
---
-ALTER TABLE `tracking`
+ALTER TABLE `trackings`
   MODIFY `idtracking` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `form`
+-- Constraints for table `submitforms`
 --
-ALTER TABLE `form`
-  ADD CONSTRAINT `fk_form_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `submitforms`
+  ADD CONSTRAINT `fk_submitforms_forms1` FOREIGN KEY (`forms_id`) REFERENCES `forms` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_submitforms_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `tracking`
+-- Constraints for table `trackings`
 --
-ALTER TABLE `tracking`
-  ADD CONSTRAINT `fk_tracking_form1` FOREIGN KEY (`form_id`) REFERENCES `form` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tracking_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `fk_user_group` FOREIGN KEY (`group_id`) REFERENCES `group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `trackings`
+  ADD CONSTRAINT `fk_tracking_form1` FOREIGN KEY (`form_id`) REFERENCES `forms` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
