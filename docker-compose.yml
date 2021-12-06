@@ -13,6 +13,7 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_ROOT_PASSWORD: ${ROOT_PWD}
       MYSQL_ROOT_HOST: "%"
+      TZ: Asia/Bangkok
 
   phpmyadmin: #phpmyadmin database GUI
     depends_on:
