@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Dec 06, 2021 at 10:25 AM
+-- Generation Time: Jan 30, 2022 at 02:03 PM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.20
 
@@ -29,11 +29,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `forms` (
   `id` int(11) NOT NULL,
-  `form_name` varchar(255) DEFAULT NULL,
-  `form_prototype` text COMMENT 'ตารางเก็บฟอร์มที่ Officer และ Chief สร้างขึ้น',
-  `created_date` datetime DEFAULT NULL,
-  `created_by` varchar(255) DEFAULT NULL,
-  `approval_email` text COMMENT 'เก็บอีเมลของผู้ที่ต้องอนุมัติคำร้อง'
+  `form_name` varchar(255) DEFAULT NULL COMMENT 'Column เก็บชื่อฟอร์ม',
+  `form_specific` text COMMENT 'Column เก็บหัวข้อเฉพาะ',
+  `created_date` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่สร้างฟอร์ม',
+  `created_by` varchar(255) DEFAULT NULL COMMENT 'Column เก็บผู้ที่สร้างฟอร์ม',
+  `approval_name` text COMMENT 'Column เก็บชื่อของผู้ที่ต้องอนุมัติคำร้อง',
+  `form_status` enum('active','disable') DEFAULT NULL COMMENT 'Column เก็บสถานะของฟอร์ม(เปิดการกรอกฟอร์มหรือปิดการกรอกฟอร์ม)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table เอาไว้เก็บ form ที่ head officer และ officer สร้าง';
 
 -- --------------------------------------------------------
@@ -44,33 +45,11 @@ CREATE TABLE `forms` (
 
 CREATE TABLE `reports` (
   `id` int(11) NOT NULL,
-  `report_title` varchar(255) NOT NULL,
-  `report_detail` text NOT NULL,
-  `report_state` enum('read','unread') NOT NULL,
-  `report_created` datetime NOT NULL
+  `report_title` varchar(255) NOT NULL COMMENT 'Column เก็บหัวข้อการร้องเรียน',
+  `report_detail` text NOT NULL COMMENT 'Column เก็บรายละเอียดการร้องเรียน',
+  `report_state` enum('read','unread') NOT NULL COMMENT 'Column เก็บสถานะการร้องเรียน',
+  `report_created` datetime NOT NULL COMMENT 'Column เก็บวันที่สร้างการร้องเรียน'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `reports`
---
-
-INSERT INTO `reports` (`id`, `report_title`, `report_detail`, `report_state`, `report_created`) VALUES
-(1, 'โดนอาจารย์บุลลี่', 'โดนอาจารย์บุลลี่ในวิชาสมาธิ', 'read', '2021-12-02 00:01:42'),
-(2, 'โดนอาจารย์บุลลี่fdgdfsgdfsg', 'โดนอาจารย์บุลลี่ในวิชาสมาธิdsfgdfsgd', 'read', '2021-12-02 21:42:55'),
-(3, 'asdfsafadf', 'asdfsadfsadfsafsd', 'read', '2021-12-02 21:46:58'),
-(4, 'asdfdsaf', 'dghfdhf', 'read', '2021-12-02 21:47:57'),
-(5, 'asdfdaf', 'asdfasdfsdf551555', 'read', '2021-12-02 21:56:33'),
-(6, 'asdfdaf', 'asdfasdfsdf551555', 'read', '2021-12-02 21:56:53'),
-(7, 'agsdfgdfs', 'gdsfgdsfgdsfg', 'read', '2021-12-02 22:00:39'),
-(8, 'agsdfgdfs', 'gdsfgdsfgdsfg', 'read', '2021-12-02 22:03:20'),
-(9, 'ฟหกดหฟก', 'กด', 'unread', '2021-12-02 22:08:27'),
-(10, 'หฟกดหฟกดฟดหฟกด', 'ฟหกดหฟกด', 'unread', '2021-12-02 22:23:00'),
-(11, 'fdgdfsgdh', 'ffjghj', 'unread', '2021-12-02 22:24:02'),
-(12, 'fdgdfsgdh', 'ffjghj', 'unread', '2021-12-02 22:24:10'),
-(13, 'gdfsgh', 'fjgkhjkjk454', 'unread', '2021-12-02 22:25:43'),
-(14, 'gdfsgh', 'fjgkhjkjk454', 'unread', '2021-12-02 22:31:50'),
-(15, 'sadfhdfhgf', 'jgghj', 'unread', '2021-12-02 22:33:58'),
-(16, 'sdfgfdhfj', 'khjkjkljk;', 'read', '2021-12-02 22:40:39');
 
 -- --------------------------------------------------------
 
@@ -80,11 +59,11 @@ INSERT INTO `reports` (`id`, `report_title`, `report_detail`, `report_state`, `r
 
 CREATE TABLE `submitforms` (
   `id` int(11) NOT NULL,
-  `form_value` text,
-  `submit_date` datetime DEFAULT NULL,
-  `users_id` int(11) NOT NULL,
+  `form_value` text COMMENT 'Column เก็บข้อมูลจากข้อมูลเฉพาะ',
+  `submit_date` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่ส่งคำร้อง',
   `forms_id` int(11) NOT NULL,
-  `submit_state` varchar(45) DEFAULT NULL
+  `submit_state` varchar(45) DEFAULT NULL,
+  `submit_by` varchar(255) DEFAULT NULL COMMENT 'Column เก็บชื่อผู้ส่งคำร้อง'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -109,28 +88,30 @@ CREATE TABLE `trackings` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `status` enum('user','officer','chief','secretary','admin') NOT NULL,
-  `f_name` varchar(255) DEFAULT NULL,
-  `l_name` varchar(255) DEFAULT NULL,
-  `tel_num` varchar(10) DEFAULT NULL,
-  `gender` enum('ชาย','หญิง') DEFAULT NULL,
-  `registered` datetime DEFAULT NULL,
-  `last_login` datetime DEFAULT NULL,
-  `agency` varchar(255) DEFAULT NULL
+  `email` varchar(255) NOT NULL COMMENT 'Column เก็บ email ที่ใช้ในการเข้าสู่ระบบ',
+  `password` varchar(255) NOT NULL COMMENT 'Column เก็บรหัสผ่านในการเข้าสู่ระบบ',
+  `status` enum('user','officer','chief','secretary','admin') NOT NULL COMMENT 'Column เก็บสถานะของผู้ใช้งานในแต่ละบทบาท',
+  `f_name` varchar(255) DEFAULT NULL COMMENT 'Column เก็บชื่อผู้ใช้งาน',
+  `l_name` varchar(255) DEFAULT NULL COMMENT 'Column เก็บนามสกุลผู้ใช้งาน',
+  `tel_num` varchar(10) DEFAULT NULL COMMENT 'Column เก็บเบอร์โทรผู้ใช้งาน',
+  `gender` enum('ชาย','หญิง') DEFAULT NULL COMMENT 'Column เก็บเพศของผู้ใช้งาน',
+  `address` text COMMENT 'Column เก็บที่อยู่ผู้ใช้งาน',
+  `registered` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่ลงทะเบียน',
+  `last_login` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่เข้าสู่ระบบครั้งล่าสุด',
+  `agency` varchar(255) DEFAULT NULL COMMENT 'Column เก็บองค์กรหรือหน่วยงาน',
+  `img` text COMMENT 'Column เก็บรูปผู้ใช้งาน'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='เป็น Table ที่เก็บสมาชิกทุกคน(student,officer,head officer,super admin)';
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `status`, `f_name`, `l_name`, `tel_num`, `gender`, `registered`, `last_login`, `agency`) VALUES
-(1, 'chief@kmitl.ac.th', '$2b$10$cnvUyGs831sC.S107Bbxh.e9TuXNX5uYRiSDSlILGbo81dx3UYLRa', 'chief', 'กชกร', 'ไตรพจน์', NULL, NULL, '2021-12-01 06:23:35', '2021-12-02 18:44:58', 'kmitl'),
-(2, 'user@kmitl.ac.th', '$2b$10$7E7lZENm/rnrX1cflXsFpeHlr9KL2uUwBFsAyxUd2Q2zzbpUTFZLW', 'user', 'ณัฐกิต', 'วงศ์สิง', '0856145522', 'ชาย', '2021-12-01 06:24:52', '2021-12-02 18:28:31', 'kmitl'),
-(3, 'officer@kmitl.ac.th', '$2b$10$HIxiU23xveHK7oS57IJMeOmJVTSQWW28Z1QEyJF7gOwSDjjIb88Ga', 'officer', 'จิรัฐิติกาล', 'จันทร์แก้ว', NULL, NULL, '2021-12-01 06:28:05', '2021-12-02 18:44:04', 'kmitl'),
-(4, 'secretary@kmitl.ac.th', '$2b$10$/aTHOASVRzmhskBp4T.EnOCQhgtnT9NS4akv810nMheZu1toRTZ4y', 'secretary', 'ชุติกาญจน์', 'แก้วมณี', NULL, NULL, '2021-12-01 06:29:22', '2021-12-02 18:47:52', 'kmitl'),
-(5, 'admin@kmitl.ac.th', '$2b$10$NlXElY5HqXP9gmOc0hH61ulKUDpLf7FPtJdwfgvY9OV4hRDUXOfpG', 'admin', 'ณัฐชยุต', 'แสงโสรจสุข', NULL, NULL, '2021-12-01 06:29:57', '2021-12-02 18:52:10', '');
+INSERT INTO `users` (`id`, `email`, `password`, `status`, `f_name`, `l_name`, `tel_num`, `gender`, `address`, `registered`, `last_login`, `agency`, `img`) VALUES
+(3, 'chief@kmitl.ac.th', '$2b$10$MUEOjWd/KX.XxZrwRnkzXOffLYHTUp3rTAPlO/3csGaXS/2PFVKxu', 'chief', NULL, NULL, NULL, NULL, NULL, '2022-01-29 13:19:51', '2022-01-29 16:38:32', 'kmitl', NULL),
+(4, 'user@kmitl.ac.th', '$2b$10$8DnQ/YX1kDys9YF9xyiN6eOXoUA9lY3CIHcqeV6eiv1kSf2C6ZWbS', 'user', NULL, NULL, NULL, NULL, NULL, '2022-01-29 13:20:40', '2022-01-29 14:30:14', 'kmitl', NULL),
+(5, 'officer@kmitl.ac.th', '$2b$10$5Nfbshr/0.VTrXfOBRmjoeSz3as6nu3kNtdOoEjXQ8PJcON0gR3Xa', 'officer', 'จิรัฐิติกาล', 'จันทร์แก้ว', NULL, NULL, NULL, '2022-01-29 13:22:25', '2022-01-29 16:07:55', 'kmitl', NULL),
+(6, 'secretary@kmitl.ac.th', '$2b$10$JGdcKWLvo9tevtcAccjdAO84q6BTMh9ai5LI2pNDrf9u0TNerrdVq', 'secretary', NULL, NULL, NULL, NULL, NULL, '2022-01-29 13:22:55', NULL, 'kmitl', NULL),
+(7, 'admin@kmitl.ac.th', '$2b$10$9z7ROeA1UUSr/Euqr3riXOxAFSqEUaNS.oFnwHGtBAYCeDZzoHuAG', 'admin', NULL, NULL, NULL, NULL, NULL, '2022-01-29 13:23:07', '2022-01-29 16:33:03', 'kmitl', NULL);
 
 --
 -- Indexes for dumped tables
@@ -153,7 +134,6 @@ ALTER TABLE `reports`
 --
 ALTER TABLE `submitforms`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_submitforms_users1_idx` (`users_id`),
   ADD KEY `fk_submitforms_forms1_idx` (`forms_id`);
 
 --
@@ -183,7 +163,7 @@ ALTER TABLE `forms`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `submitforms`
@@ -201,7 +181,7 @@ ALTER TABLE `trackings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -211,8 +191,7 @@ ALTER TABLE `users`
 -- Constraints for table `submitforms`
 --
 ALTER TABLE `submitforms`
-  ADD CONSTRAINT `fk_submitforms_forms1` FOREIGN KEY (`forms_id`) REFERENCES `forms` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_submitforms_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_submitforms_forms1` FOREIGN KEY (`forms_id`) REFERENCES `forms` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `trackings`
