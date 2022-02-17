@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Feb 17, 2022 at 02:46 PM
+-- Generation Time: Feb 17, 2022 at 02:56 PM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.20
 
@@ -124,14 +124,14 @@ CREATE TABLE `users` (
   `registered` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่ลงทะเบียน',
   `last_login` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่เข้าสู่ระบบครั้งล่าสุด',
   `img` text COMMENT 'Column เก็บรูปผู้ใช้งาน',
-  `agency_id` int(11) NOT NULL
+  `agencies_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='เป็น Table ที่เก็บสมาชิกทุกคน(student,officer,head officer,super admin)';
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `password`, `role`, `f_name`, `l_name`, `tel_num`, `gender`, `address`, `registered`, `last_login`, `img`, `agency_id`) VALUES
+INSERT INTO `users` (`user_id`, `email`, `password`, `role`, `f_name`, `l_name`, `tel_num`, `gender`, `address`, `registered`, `last_login`, `img`, `agencies_id`) VALUES
 (1, 'chief@kmitl.ac.th', '$2b$10$4YdedPnm6i6kGWDASqyc2uhG18vCuUh/ftg3wj2aprdQy4blLXq.C', 'chief', 'กชกร', 'ไตรพจน์', NULL, NULL, NULL, '2022-02-13 08:54:47', '2022-02-13 17:31:53', NULL, 1),
 (2, 'user@kmitl.ac.th', '$2b$10$kujdoK6qzV5.JBR5wWCgYOepVpVHzjl4NyYLaq6/e7uFd8AV1yl2O', 'user', 'ณัฐกิต', 'วงศ์สิง', NULL, NULL, NULL, '2022-02-13 17:13:00', '2022-02-13 17:22:18', NULL, 1),
 (3, 'officer@kmitl.ac.th', '$2b$10$L0SC07/FEjEIK.RoSIBP4.OeNuWkhQq59iPyLFImw.1ib9hpclkfm', 'officer', 'จิรัฐิติกาล', 'จันทร์แก้ว', NULL, NULL, NULL, '2022-02-13 17:13:25', '2022-02-14 14:01:44', NULL, 1),
@@ -178,7 +178,7 @@ ALTER TABLE `submitforms`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD KEY `fk_users_agency1_idx` (`agency_id`);
+  ADD KEY `fk_users_agency1_idx` (`agencies_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -241,7 +241,7 @@ ALTER TABLE `submitforms`
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `fk_users_agency1` FOREIGN KEY (`agency_id`) REFERENCES `agency` (`agency_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_users_agency1` FOREIGN KEY (`agencies_id`) REFERENCES `agency` (`agency_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
