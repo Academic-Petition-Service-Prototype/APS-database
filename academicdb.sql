@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Feb 17, 2022 at 02:56 PM
--- Server version: 5.7.36
--- PHP Version: 7.4.20
+-- Generation Time: Mar 20, 2022 at 05:55 AM
+-- Server version: 5.7.37
+-- PHP Version: 8.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -63,10 +63,10 @@ CREATE TABLE `forms` (
 --
 
 INSERT INTO `forms` (`form_id`, `form_name`, `form_specific`, `created_date`, `approval_name`, `form_status`, `users_id`) VALUES
-(1, 'คำร้องkmitl1', '[{\"id\":1,\"title\":\"วิชา\"}]', '2022-02-14 14:04:03', '[{\"id\":1,\"title\":\"ชญานิน\"},{\"id\":2,\"title\":\"บัวสละ\"}]', 'active', 3),
-(2, 'คำร้องkmitl2', '[{\"id\":1,\"title\":\"วิชา\"}]', '2022-02-14 14:04:33', '[{\"id\":1,\"title\":\"ชญานิน\"},{\"id\":2,\"title\":\"บัวสละ\"}]', 'active', 3),
-(3, 'คำร้องkmitl3', '[{\"id\":1,\"title\":\"วิชา\"}]', '2022-02-14 14:04:55', '[{\"id\":1,\"title\":\"ชญานิน\"},{\"id\":2,\"title\":\"บัวสละ\"}]', 'active', 3),
-(4, 'คำร้องCMU1', '[]', '2022-02-14 15:10:39', '[{\"id\":2,\"title\":\"ชญานิน\"}]', 'active', 8);
+(1, 'คำร้องkmitl1', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"},{\"id\":3,\"title\":\"หัวข้อ3\"}]', '2022-03-14 08:54:50', '[{\"order\":1,\"approver_name\":{\"user_id\":1,\"f_name\":\"กชกร\",\"l_name\":\"ไตรพจน์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":2,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":3,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 'active', 3),
+(2, 'คำร้องkmitl2', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"}]', '2022-03-14 09:47:12', '[{\"order\":1,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":2,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 'active', 3),
+(3, 'คำร้องCMU1', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"},{\"id\":3,\"title\":\"หัวข้อ3\"}]', '2022-03-19 15:05:01', '[{\"order\":1,\"approver_name\":{\"user_id\":11,\"f_name\":\"ณัฐพงศ์\",\"l_name\":\"บุญปั๋น\"}},{\"order\":2,\"approver_name\":{\"user_id\":12,\"f_name\":\"ปุณณัตถ์\",\"l_name\":\"บุญอินทร์\"}}]', 'active', 8),
+(4, 'คำร้องCMU2', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"},{\"id\":3,\"title\":\"หัวข้อ3\"}]', '2022-03-19 15:07:21', '[{\"order\":1,\"approver_name\":{\"user_id\":11,\"f_name\":\"ณัฐพงศ์\",\"l_name\":\"บุญปั๋น\"}},{\"order\":2,\"approver_name\":{\"user_id\":12,\"f_name\":\"ปุณณัตถ์\",\"l_name\":\"บุญอินทร์\"}}]', 'active', 8);
 
 -- --------------------------------------------------------
 
@@ -88,7 +88,8 @@ CREATE TABLE `reports` (
 --
 
 INSERT INTO `reports` (`report_id`, `report_title`, `report_detail`, `report_state`, `report_created`, `users_id`) VALUES
-(1, 'โดนอาจารย์บุลลี่', 'โดนอาจารย์บุลลี่ในวิชาสมาธิ', 'unread', '2022-02-14 00:38:08', 2);
+(1, 'โดนอาจารย์บุลลี่', 'โดนอาจารย์บุลลี่ในวิชาสมาธิ', 'unread', '2022-02-14 00:38:08', 2),
+(2, 'ปัญหาภายในคณะCMU1', 'รายละเอียดปัญหาภายในคณะCMU1', 'read', '2022-03-20 12:38:54', 13);
 
 -- --------------------------------------------------------
 
@@ -101,9 +102,19 @@ CREATE TABLE `submitforms` (
   `form_value` text COMMENT 'Column เก็บข้อมูลจากข้อมูลเฉพาะ',
   `submit_date` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่ส่งคำร้อง',
   `submit_state` varchar(5) DEFAULT NULL,
+  `approval_order` text,
   `users_id` int(11) NOT NULL,
   `forms_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `submitforms`
+--
+
+INSERT INTO `submitforms` (`submit_id`, `form_value`, `submit_date`, `submit_state`, `approval_order`, `users_id`, `forms_id`) VALUES
+(1, '[\"ข้อมูล1\",\"ข้อมูล2\"]', '2022-03-14 17:11:29', '1', '[{\"order\":1,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":2,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 2, 2),
+(2, '[\"ข้อมูล1\",\"ข้อมูล2\",\"ข้อมูล3\"]', '2022-03-17 12:10:34', '2', '[{\"order\":1,\"approver_name\":{\"user_id\":1,\"f_name\":\"กชกร\",\"l_name\":\"ไตรพจน์\"},\"approver_state\":\"อนุมัติแล้ว\"},{\"order\":2,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":3,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 2, 1),
+(3, '[\"เทสข้อมูล1\",\"เทสข้อมูล2\",\"เทสข้อมูล3\"]', '2022-03-17 13:08:58', '2', '[{\"order\":1,\"approver_name\":{\"user_id\":1,\"f_name\":\"กชกร\",\"l_name\":\"ไตรพจน์\"},\"approver_state\":\"อนุมัติแล้ว\"},{\"order\":2,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":3,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -139,7 +150,12 @@ INSERT INTO `users` (`user_id`, `email`, `password`, `role`, `f_name`, `l_name`,
 (5, 'admin@kmitl.ac.th', '$2b$10$etQjZe6s2dtKndZ163yG5Oxd2oeNw5Ak7fM0E3Z.sClxGkJfKjJCC', 'admin', 'ณัฐชยุต', 'แสงโสรจสุข', NULL, NULL, NULL, '2022-02-13 17:14:17', '2022-02-13 17:31:11', NULL, 2),
 (6, 'admin2@kmitl.ac.th', '$2b$10$AnR5jyQ93eBA3STvxBs38OjDxnl2ZmLbH8fO2OVzUoYvFZz6nc4Hu', 'admin', 'พงษ์ศิริ', 'หิรัญญนิธิวัฒนา', NULL, NULL, NULL, NULL, NULL, NULL, 2),
 (7, 'user2@kmitl.ac.th', '$2b$10$xTFb6R5Kn6dd0/Zsb72Rs.NBxUgpjlJpvRpi7XfOtnXIjhIghWF4a', 'user', 'สุทธา', 'ชาญเชิงค้า', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 1),
-(8, 'officer2@kmitl.ac.th', '$2b$10$OyIdZZFvq7CZ1k090Frt1.ZpyCoVf0WMLTSgR3tyQBnNNVbquEali', 'officer', 'สุทธา', 'ชาญเชิงค้า', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, '2022-02-14 15:09:46', '', 3);
+(8, 'officer2@kmitl.ac.th', '$2b$10$OyIdZZFvq7CZ1k090Frt1.ZpyCoVf0WMLTSgR3tyQBnNNVbquEali', 'officer', 'สุทธา', 'ทองมา', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, '2022-02-14 15:09:46', '', 3),
+(9, 'chief2@kmitl.ac.th', '$2b$10$F9DljrbIhwWhlyoLXjsdbei4/Nzs0rP6lngdVoYnfvOVnjQWE2o.y', 'chief', 'เกเช', 'กะมาสา', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 1),
+(10, 'chief3@kmitl.ac.th', '$2b$10$qCtgJDXMjgPhQfANw6em6.gnlyql7/Y9B9ZqTfF3jYFm1A.fTAoy.', 'chief', 'พัฒนพงษ์', 'พงศ์ศุภสมิทธิ์', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 1),
+(11, 'chief4@kmitl.ac.th', '$2b$10$U1kUi7b0yAsOr/A4417SEOgIuDIqN5XeyAQE4XuvAIjibnum2sqGy', 'chief', 'ณัฐพงศ์', 'บุญปั๋น', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 3),
+(12, 'chief5@kmitl.ac.th', '$2b$10$6NmjZNkkaR.7NsaL7JKv7OKHGV0nOdSaZHEhj2dxuseDjnaQuRgH.', 'chief', 'ปุณณัตถ์', 'บุญอินทร์', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 3),
+(13, 'user3@kmitl.ac.th', '$2b$10$brIs0L7is1EVznZm4J/XMeP//RdYSD9yYCMRc9c7DtXjmOkBHwOMi', 'user', 'ชยานัน', 'กรรมทัน', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 3);
 
 --
 -- Indexes for dumped tables
@@ -200,19 +216,19 @@ ALTER TABLE `forms`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `submitforms`
 --
 ALTER TABLE `submitforms`
-  MODIFY `submit_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `submit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
