@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Mar 20, 2022 at 05:55 AM
+-- Generation Time: Apr 20, 2022 at 04:42 AM
 -- Server version: 5.7.37
 -- PHP Version: 8.0.15
 
@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `agency` (
-  `agency_id` int(11) NOT NULL,
-  `agency_name` varchar(255) DEFAULT NULL COMMENT 'Column เก็บชื่อองค์กรหรือหน่วยงาน',
-  `agency_created` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่สร้างองค์กรหรือหน่วยงาน'
+  `agency_id` int(3) NOT NULL,
+  `agency_name` varchar(255) NOT NULL COMMENT 'Column เก็บชื่อองค์กรหรือหน่วยงาน',
+  `agency_created` datetime NOT NULL COMMENT 'Column เก็บวันที่สร้างองค์กรหรือหน่วยงาน'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -38,9 +38,7 @@ CREATE TABLE `agency` (
 --
 
 INSERT INTO `agency` (`agency_id`, `agency_name`, `agency_created`) VALUES
-(1, 'kmitl', '2022-02-13 07:26:15'),
-(2, 'admin', '2022-02-13 07:58:28'),
-(3, 'CMU', '2022-02-14 15:06:58');
+(1, 'admin', '2022-02-13 07:58:28');
 
 -- --------------------------------------------------------
 
@@ -49,24 +47,16 @@ INSERT INTO `agency` (`agency_id`, `agency_name`, `agency_created`) VALUES
 --
 
 CREATE TABLE `forms` (
-  `form_id` int(11) NOT NULL,
-  `form_name` varchar(255) DEFAULT NULL COMMENT 'Column เก็บชื่อฟอร์ม',
-  `form_specific` text COMMENT 'Column เก็บหัวข้อเฉพาะ',
-  `created_date` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่สร้างฟอร์ม',
+  `form_id` int(5) NOT NULL,
+  `form_name` varchar(255) DEFAULT NULL COMMENT 'Column เก็บชื่อคำร้อง',
+  `form_specific` text COMMENT 'Column เก็บหัวข้อเฉพาะคำร้อง',
+  `created_date` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่สร้างคำร้อง',
   `approval_name` text COMMENT 'Column เก็บชื่อของผู้ที่ต้องอนุมัติคำร้อง',
-  `form_status` enum('active','disable') DEFAULT NULL COMMENT 'Column เก็บสถานะของฟอร์ม(เปิดการกรอกฟอร์มหรือปิดการกรอกฟอร์ม)',
-  `users_id` int(11) NOT NULL
+  `form_status` tinyint(1) DEFAULT NULL COMMENT 'Column เก็บสถานะของคำร้อง(เปิดการกรอกคำร้องหรือปิดการกรอกคำร้อง)',
+  `form_detail` text COMMENT 'Column เก็บรายละเอียดของคำร้อง',
+  `users_id` int(6) NOT NULL,
+  `tags_id` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table เอาไว้เก็บ form ที่ head officer และ officer สร้าง';
-
---
--- Dumping data for table `forms`
---
-
-INSERT INTO `forms` (`form_id`, `form_name`, `form_specific`, `created_date`, `approval_name`, `form_status`, `users_id`) VALUES
-(1, 'คำร้องkmitl1', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"},{\"id\":3,\"title\":\"หัวข้อ3\"}]', '2022-03-14 08:54:50', '[{\"order\":1,\"approver_name\":{\"user_id\":1,\"f_name\":\"กชกร\",\"l_name\":\"ไตรพจน์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":2,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":3,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 'active', 3),
-(2, 'คำร้องkmitl2', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"}]', '2022-03-14 09:47:12', '[{\"order\":1,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":2,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 'active', 3),
-(3, 'คำร้องCMU1', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"},{\"id\":3,\"title\":\"หัวข้อ3\"}]', '2022-03-19 15:05:01', '[{\"order\":1,\"approver_name\":{\"user_id\":11,\"f_name\":\"ณัฐพงศ์\",\"l_name\":\"บุญปั๋น\"}},{\"order\":2,\"approver_name\":{\"user_id\":12,\"f_name\":\"ปุณณัตถ์\",\"l_name\":\"บุญอินทร์\"}}]', 'active', 8),
-(4, 'คำร้องCMU2', '[{\"id\":1,\"title\":\"หัวข้อ1\"},{\"id\":2,\"title\":\"หัวข้อ2\"},{\"id\":3,\"title\":\"หัวข้อ3\"}]', '2022-03-19 15:07:21', '[{\"order\":1,\"approver_name\":{\"user_id\":11,\"f_name\":\"ณัฐพงศ์\",\"l_name\":\"บุญปั๋น\"}},{\"order\":2,\"approver_name\":{\"user_id\":12,\"f_name\":\"ปุณณัตถ์\",\"l_name\":\"บุญอินทร์\"}}]', 'active', 8);
 
 -- --------------------------------------------------------
 
@@ -75,21 +65,29 @@ INSERT INTO `forms` (`form_id`, `form_name`, `form_specific`, `created_date`, `a
 --
 
 CREATE TABLE `reports` (
-  `report_id` int(11) NOT NULL,
+  `report_id` int(5) NOT NULL,
   `report_title` varchar(255) NOT NULL COMMENT 'Column เก็บหัวข้อการร้องเรียน',
   `report_detail` text NOT NULL COMMENT 'Column เก็บรายละเอียดการร้องเรียน',
   `report_state` enum('read','unread') NOT NULL COMMENT 'Column เก็บสถานะการร้องเรียน',
   `report_created` datetime NOT NULL COMMENT 'Column เก็บวันที่สร้างการร้องเรียน',
-  `users_id` int(11) NOT NULL
+  `report_occur` datetime NOT NULL COMMENT 'Column เก็บวันที่เกิดเหตุการณ์',
+  `users_id` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `reports`
+-- Table structure for table `requests`
 --
 
-INSERT INTO `reports` (`report_id`, `report_title`, `report_detail`, `report_state`, `report_created`, `users_id`) VALUES
-(1, 'โดนอาจารย์บุลลี่', 'โดนอาจารย์บุลลี่ในวิชาสมาธิ', 'unread', '2022-02-14 00:38:08', 2),
-(2, 'ปัญหาภายในคณะCMU1', 'รายละเอียดปัญหาภายในคณะCMU1', 'read', '2022-03-20 12:38:54', 13);
+CREATE TABLE `requests` (
+  `request_id` int(5) NOT NULL,
+  `request_title` varchar(255) NOT NULL COMMENT 'Column เก็บหัวเรื่องการร้องขอคำร้องที่ไม่มีในระบบ',
+  `request_detail` text NOT NULL COMMENT 'Column เก็บรายละเอียดเหตุผลการร้องขอคำร้องที่ไม่มีในระบบ',
+  `request_state` enum('read','unread') NOT NULL COMMENT 'Column เก็บสถานะการการร้องขอคำร้องที่ไม่มีในระบบ',
+  `request_created` datetime NOT NULL COMMENT 'Column เก็บวันที่สร้างการร้องขอคำร้องที่ไม่มีในระบบ',
+  `users_id` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -98,23 +96,28 @@ INSERT INTO `reports` (`report_id`, `report_title`, `report_detail`, `report_sta
 --
 
 CREATE TABLE `submitforms` (
-  `submit_id` int(11) NOT NULL,
+  `submit_id` int(9) NOT NULL,
   `form_value` text COMMENT 'Column เก็บข้อมูลจากข้อมูลเฉพาะ',
   `submit_date` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่ส่งคำร้อง',
-  `submit_state` varchar(5) DEFAULT NULL,
+  `submit_state` int(2) DEFAULT NULL,
   `approval_order` text,
-  `users_id` int(11) NOT NULL,
-  `forms_id` int(11) NOT NULL
+  `submit_refuse` text,
+  `users_id` int(6) NOT NULL,
+  `forms_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `submitforms`
+-- Table structure for table `tags`
 --
 
-INSERT INTO `submitforms` (`submit_id`, `form_value`, `submit_date`, `submit_state`, `approval_order`, `users_id`, `forms_id`) VALUES
-(1, '[\"ข้อมูล1\",\"ข้อมูล2\"]', '2022-03-14 17:11:29', '1', '[{\"order\":1,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":2,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 2, 2),
-(2, '[\"ข้อมูล1\",\"ข้อมูล2\",\"ข้อมูล3\"]', '2022-03-17 12:10:34', '2', '[{\"order\":1,\"approver_name\":{\"user_id\":1,\"f_name\":\"กชกร\",\"l_name\":\"ไตรพจน์\"},\"approver_state\":\"อนุมัติแล้ว\"},{\"order\":2,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":3,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 2, 1),
-(3, '[\"เทสข้อมูล1\",\"เทสข้อมูล2\",\"เทสข้อมูล3\"]', '2022-03-17 13:08:58', '2', '[{\"order\":1,\"approver_name\":{\"user_id\":1,\"f_name\":\"กชกร\",\"l_name\":\"ไตรพจน์\"},\"approver_state\":\"อนุมัติแล้ว\"},{\"order\":2,\"approver_name\":{\"user_id\":9,\"f_name\":\"เกเช\",\"l_name\":\"กะมาสา\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"},{\"order\":3,\"approver_name\":{\"user_id\":10,\"f_name\":\"พัฒนพงษ์\",\"l_name\":\"พงศ์ศุภสมิทธิ์\"},\"approver_state\":\"ยังไม่ได้อนุมัติ\"}]', 7, 1);
+CREATE TABLE `tags` (
+  `tag_id` int(3) NOT NULL,
+  `tag_name` varchar(255) NOT NULL,
+  `tag_created` datetime NOT NULL,
+  `agencies_id` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -123,7 +126,7 @@ INSERT INTO `submitforms` (`submit_id`, `form_value`, `submit_date`, `submit_sta
 --
 
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL,
+  `user_id` int(6) NOT NULL,
   `email` varchar(255) NOT NULL COMMENT 'Column เก็บ email ที่ใช้ในการเข้าสู่ระบบ',
   `password` varchar(255) NOT NULL COMMENT 'Column เก็บรหัสผ่านในการเข้าสู่ระบบ',
   `role` enum('user','officer','chief','secretary','admin') NOT NULL COMMENT 'Column เก็บสถานะของผู้ใช้งานในแต่ละบทบาท',
@@ -135,7 +138,7 @@ CREATE TABLE `users` (
   `registered` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่ลงทะเบียน',
   `last_login` datetime DEFAULT NULL COMMENT 'Column เก็บวันที่เข้าสู่ระบบครั้งล่าสุด',
   `img` text COMMENT 'Column เก็บรูปผู้ใช้งาน',
-  `agencies_id` int(11) NOT NULL
+  `agencies_id` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='เป็น Table ที่เก็บสมาชิกทุกคน(student,officer,head officer,super admin)';
 
 --
@@ -143,19 +146,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `password`, `role`, `f_name`, `l_name`, `tel_num`, `gender`, `address`, `registered`, `last_login`, `img`, `agencies_id`) VALUES
-(1, 'chief@kmitl.ac.th', '$2b$10$4YdedPnm6i6kGWDASqyc2uhG18vCuUh/ftg3wj2aprdQy4blLXq.C', 'chief', 'กชกร', 'ไตรพจน์', NULL, NULL, NULL, '2022-02-13 08:54:47', '2022-02-13 17:31:53', NULL, 1),
-(2, 'user@kmitl.ac.th', '$2b$10$kujdoK6qzV5.JBR5wWCgYOepVpVHzjl4NyYLaq6/e7uFd8AV1yl2O', 'user', 'ณัฐกิต', 'วงศ์สิง', NULL, NULL, NULL, '2022-02-13 17:13:00', '2022-02-13 17:22:18', NULL, 1),
-(3, 'officer@kmitl.ac.th', '$2b$10$L0SC07/FEjEIK.RoSIBP4.OeNuWkhQq59iPyLFImw.1ib9hpclkfm', 'officer', 'จิรัฐิติกาล', 'จันทร์แก้ว', NULL, NULL, NULL, '2022-02-13 17:13:25', '2022-02-14 14:01:44', NULL, 1),
-(4, 'secretary@kmitl.ac.th', '$2b$10$Fc8r06MayQ3/S00MkQ8VFOdKjHtG5HHMU0pyr9/2nnuY600cTW/gW', 'secretary', 'ชุติกาญจน์', 'แก้วมณี', NULL, NULL, NULL, '2022-02-13 17:13:51', '2022-02-13 17:27:34', NULL, 1),
-(5, 'admin@kmitl.ac.th', '$2b$10$etQjZe6s2dtKndZ163yG5Oxd2oeNw5Ak7fM0E3Z.sClxGkJfKjJCC', 'admin', 'ณัฐชยุต', 'แสงโสรจสุข', NULL, NULL, NULL, '2022-02-13 17:14:17', '2022-02-13 17:31:11', NULL, 2),
-(6, 'admin2@kmitl.ac.th', '$2b$10$AnR5jyQ93eBA3STvxBs38OjDxnl2ZmLbH8fO2OVzUoYvFZz6nc4Hu', 'admin', 'พงษ์ศิริ', 'หิรัญญนิธิวัฒนา', NULL, NULL, NULL, NULL, NULL, NULL, 2),
-(7, 'user2@kmitl.ac.th', '$2b$10$xTFb6R5Kn6dd0/Zsb72Rs.NBxUgpjlJpvRpi7XfOtnXIjhIghWF4a', 'user', 'สุทธา', 'ชาญเชิงค้า', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 1),
-(8, 'officer2@kmitl.ac.th', '$2b$10$OyIdZZFvq7CZ1k090Frt1.ZpyCoVf0WMLTSgR3tyQBnNNVbquEali', 'officer', 'สุทธา', 'ทองมา', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, '2022-02-14 15:09:46', '', 3),
-(9, 'chief2@kmitl.ac.th', '$2b$10$F9DljrbIhwWhlyoLXjsdbei4/Nzs0rP6lngdVoYnfvOVnjQWE2o.y', 'chief', 'เกเช', 'กะมาสา', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 1),
-(10, 'chief3@kmitl.ac.th', '$2b$10$qCtgJDXMjgPhQfANw6em6.gnlyql7/Y9B9ZqTfF3jYFm1A.fTAoy.', 'chief', 'พัฒนพงษ์', 'พงศ์ศุภสมิทธิ์', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 1),
-(11, 'chief4@kmitl.ac.th', '$2b$10$U1kUi7b0yAsOr/A4417SEOgIuDIqN5XeyAQE4XuvAIjibnum2sqGy', 'chief', 'ณัฐพงศ์', 'บุญปั๋น', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 3),
-(12, 'chief5@kmitl.ac.th', '$2b$10$6NmjZNkkaR.7NsaL7JKv7OKHGV0nOdSaZHEhj2dxuseDjnaQuRgH.', 'chief', 'ปุณณัตถ์', 'บุญอินทร์', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 3),
-(13, 'user3@kmitl.ac.th', '$2b$10$brIs0L7is1EVznZm4J/XMeP//RdYSD9yYCMRc9c7DtXjmOkBHwOMi', 'user', 'ชยานัน', 'กรรมทัน', '0234305111', 'ชาย', '1 ซอย ฉลองกรุง 1 แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520', NULL, NULL, '', 3);
+(1, 'admin@gmail.com', '$2b$10$HKwUVwKWmVi2fEF5VTJ8Ueny8auQXgs21qE7PfUJ1rdHgyhAHmWKe', 'admin', 'วรกร', 'คงมั่น', '0857256321', 'ชาย', ' เลขที่ 989 อาคารสยามพิวรรธน์ทาวเวอร์ ชั้นที่ 9 ถนนพระราม 1 แขวงปทุมวัน เขตปทุมวัน', '2022-04-20 03:41:06', '2022-04-20 04:00:43', '165042606598899.jpg', 1);
 
 --
 -- Indexes for dumped tables
@@ -172,7 +163,8 @@ ALTER TABLE `agency`
 --
 ALTER TABLE `forms`
   ADD PRIMARY KEY (`form_id`,`users_id`),
-  ADD KEY `fk_forms_users1_idx` (`users_id`);
+  ADD KEY `fk_forms_users1_idx` (`users_id`),
+  ADD KEY `fk_forms_tags1_idx` (`tags_id`);
 
 --
 -- Indexes for table `reports`
@@ -182,12 +174,26 @@ ALTER TABLE `reports`
   ADD KEY `fk_reports_users1_idx` (`users_id`);
 
 --
+-- Indexes for table `requests`
+--
+ALTER TABLE `requests`
+  ADD PRIMARY KEY (`request_id`),
+  ADD KEY `fk_request_users1_idx` (`users_id`);
+
+--
 -- Indexes for table `submitforms`
 --
 ALTER TABLE `submitforms`
   ADD PRIMARY KEY (`submit_id`,`users_id`,`forms_id`),
   ADD KEY `fk_submitforms_users1_idx` (`users_id`),
   ADD KEY `fk_submitforms_forms1_idx` (`forms_id`);
+
+--
+-- Indexes for table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`tag_id`,`agencies_id`),
+  ADD KEY `fk_tags_agency1_idx` (`agencies_id`);
 
 --
 -- Indexes for table `users`
@@ -204,31 +210,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `agency`
 --
 ALTER TABLE `agency`
-  MODIFY `agency_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `agency_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `forms`
 --
 ALTER TABLE `forms`
-  MODIFY `form_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `form_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `report_id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `requests`
+--
+ALTER TABLE `requests`
+  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `submitforms`
 --
 ALTER TABLE `submitforms`
-  MODIFY `submit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `submit_id` int(9) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tags`
+--
+ALTER TABLE `tags`
+  MODIFY `tag_id` int(3) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `user_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -238,26 +256,39 @@ ALTER TABLE `users`
 -- Constraints for table `forms`
 --
 ALTER TABLE `forms`
-  ADD CONSTRAINT `fk_forms_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_forms_tags1` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`tag_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_forms_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reports`
 --
 ALTER TABLE `reports`
-  ADD CONSTRAINT `fk_reports_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_reports_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `requests`
+--
+ALTER TABLE `requests`
+  ADD CONSTRAINT `fk_request_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `submitforms`
 --
 ALTER TABLE `submitforms`
-  ADD CONSTRAINT `fk_submitforms_forms1` FOREIGN KEY (`forms_id`) REFERENCES `forms` (`form_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_submitforms_forms1` FOREIGN KEY (`forms_id`) REFERENCES `forms` (`form_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_submitforms_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `tags`
+--
+ALTER TABLE `tags`
+  ADD CONSTRAINT `fk_tags_agency1` FOREIGN KEY (`agencies_id`) REFERENCES `agency` (`agency_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `fk_users_agency1` FOREIGN KEY (`agencies_id`) REFERENCES `agency` (`agency_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_users_agency1` FOREIGN KEY (`agencies_id`) REFERENCES `agency` (`agency_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
