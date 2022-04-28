@@ -1,5 +1,4 @@
 <p align="center">
-  <a href="" rel="noopener">
  <img width=400px height=300px src="img/RKR.png" alt="Project logo"></a>
 </p>
 
