@@ -1,5 +1,5 @@
 <p align="center">
- <img width=400px height=300px src="img/RKR.png" alt="Project logo"></a>
+ <img width=400px height=300px src="img/RKR.png" alt="Project logo">
 </p>
 
 <h3 align="center">Academic Petition Service Prototype</h3>
@@ -14,6 +14,15 @@
 
 <p align="center"> All in one Docker Compose to Run About DATABASE in use !
     <br> 
+</p>
+
+## 📊 ER-diagram
+
+<p>
+ <img width=600px height=400px src="img/er1.png" alt="er1">
+</p>
+<p>
+ <img width=600px height=400px src="img/er2.png" alt="er1">
 </p>
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
