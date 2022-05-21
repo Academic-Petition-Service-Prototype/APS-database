@@ -33,7 +33,7 @@ Install Docker, Docker-compose to Deploy it
 
     docker-compose up -d
 
-## ⛏️ .ENV File Using <a name = "built_using"></a>
+## 🌲 .ENV File Using <a name = "built_using"></a>
 
     ROOT_PWD
     DB_PORT
