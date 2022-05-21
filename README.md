@@ -43,7 +43,7 @@ Install Docker, Docker-compose to Deploy it
 
 - [MYSQL](https://www.mysql.com/) - Database
 - [PHPMYADMIN](https://www.phpmyadmin.net/) - Database Management
-- [NGINX](https://www.nginx.com/) - Imagestore
+- [NGINX](https://www.nginx.com/) - Image store
 - [NodeJs](https://nodejs.org/en/) - Server Environment
 
 ## ✍️ Authors <a name = "authors"></a>
