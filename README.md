@@ -50,7 +50,7 @@ Install Docker, Docker-compose to Deploy it
 
 - [@SimonHope](https://github.com/SimonHope)
 
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Academic-Petition-Service-Prototype/APS-database/graphs/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
